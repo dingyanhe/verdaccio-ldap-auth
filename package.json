@@ -4,9 +4,6 @@
   "description": "测试登陆",
   "main": "lib-ldap/src/index.js",
   "types": "lib-ldap/src/index.d.ts",
-  "files": [
-    "./lib-ldap"
-  ],
   "engines": {
     "node": ">=20"
   },
