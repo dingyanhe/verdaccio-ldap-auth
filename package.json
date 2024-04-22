@@ -32,7 +32,7 @@
   "repository": "https://git.ddxq.mobi/dingyanhe/verdaccio-auth",
   "author": "dingyanhe <dyh1531@163.com>",
   "scripts": {
-    "build": "tsc --watch",
+    "build": "tsc",
     "test": "jest .",
     "lint": "eslint \"**/*.{js,ts}\""
   },
