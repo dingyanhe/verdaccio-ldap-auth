@@ -1,6 +1,6 @@
 {
   "name": "verdaccio-ldap-auth",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "测试登陆",
   "main": "lib-ldap/src/index.js",
   "types": "lib-ldap/src/index.d.ts",
