@@ -29,7 +29,7 @@
     "域授权"
   ],
   "license": "MIT",
-  "repository": "https://git.ddxq.mobi/dingyanhe/verdaccio-auth",
+  "repository": "https://github.com/dingyanhe/verdaccio-ldap-auth",
   "author": "dingyanhe <dyh1531@163.com>",
   "scripts": {
     "build": "tsc",

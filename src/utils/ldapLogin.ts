@@ -34,7 +34,7 @@ export interface IVerifyPasswordOptions {
     filter: Record<string, string>;
   };
   /**
-   * 用来搜索时候替换字段用，例如filter: { mail: `{user}@100.me` }
+   * 用来搜索时候替换字段用，例如filter: { mail: `{user}@163.com` }
    * 那么这里就需要filter2ReplaceKey: { mail: user } // 此处的user来自IVerifyPasswordOptions
    */
   filter2ReplaceKey: Record<string, string>;
