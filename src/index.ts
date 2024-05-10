@@ -48,7 +48,6 @@ export default class AuthCustomPlugin implements IPluginAuth<PluginAuthConfig> {
       cb(getInternalError((error as any).message), false);
       return;
     }
-
   }
 
   private allow_action(

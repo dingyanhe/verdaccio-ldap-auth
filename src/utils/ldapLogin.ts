@@ -115,6 +115,12 @@ export class LDAPClientPromise {
   }
 }
 
+/**
+ * 在verdaccio配置文件里配置 filterStrings: 'mail={user}@163.com'
+ * 用户输入用户名密码：user1 pwd1
+ * 在搜索的时候会被替换'mail=user1@163.com'，搜索出来用户dn，然后验证密码
+ * @returns 
+ */
 function convertVerifyPwdOptions2SearchOptions(
   o: IVerifyPasswordOptions
 ): SearchOptions {

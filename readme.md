@@ -17,12 +17,12 @@ auth:
     clientOptions:
       url: ldap://xxxxx:389 # 请求的url
     verifyPasswordOptions:
-      adminDn: CN=npm服务,DC=100me,DC=com
+      adminDn: CN=npm服务,DC=163,DC=com
       adminPwd: xxxx
-      baseDn: DC=example,DC=com
+      baseDn: DC=163,DC=com
       searchOptions:
         filter:
-          mail: "{user}@example.me" # mail是ldap字段名，user是登陆的用户名
+          mail: "{user}@163.me" # mail是ldap字段名，user是登陆的用户名
       filter2ReplaceKey: # 用来声明，用请求的user字段填充填searchOptions的filter
         user: user
 # ...
