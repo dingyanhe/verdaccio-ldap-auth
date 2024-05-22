@@ -130,7 +130,7 @@ export class LDAPClientPromise {
 
 		try {
       c.logger.info('verifyPassword bindPromise 验证用户名密码...')
-			await c.bindPromise(userDn || '', userPwd)
+			await c.bindPromise(userDn?.toString() ?? '', userPwd)
       c.logger.info('verifyPassword bindPromise 验证用户名密码 成功')
 		} catch (error) {
       c.logger.info('verifyPassword bindPromise 验证用户名密码 失败')
