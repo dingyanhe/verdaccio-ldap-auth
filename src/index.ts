@@ -39,8 +39,12 @@ export default class AuthCustomPlugin implements IPluginAuth<PluginAuthConfig> {
    */
   public async authenticate(user: string, password: string, cb: AuthCallback) {
     try {
-      const client = new LDAPClientPromise(this.config.clientOptions)
-      await LDAPClientPromise.verifyPassword(client, this.config.verifyPasswordOptions)
+      const client = new LDAPClientPromise(this.config.clientOptions, this.logger)
+      await LDAPClientPromise.verifyPassword(client, {
+        ...this.config.verifyPasswordOptions,
+        user, 
+        userPwd: password,
+      })
       cb(null, [user]);
     } catch (error) {
       this.logger.error({ name: user }, "@{name} 授权失败");
