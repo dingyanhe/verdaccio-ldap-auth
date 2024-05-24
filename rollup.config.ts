@@ -8,8 +8,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig([{
 	input: 'src/index.ts',
-	moduleContext: () => 'that',
 	output: {
+		strict: false,
 		file: 'dist/bundle.js',
 		format: 'cjs',
 		sourcemap: true,
@@ -27,8 +27,8 @@ export default defineConfig([{
 	]
 }, {
 	input: 'src/index.ts',
-	moduleContext: () => 'that',
 	output: {
+		strict: false,
 		file: 'dist/bundle.esm.js',
 		format: 'esm',
 		sourcemap: true,
