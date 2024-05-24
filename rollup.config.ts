@@ -8,6 +8,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 export default defineConfig([{
 	input: 'src/index.ts',
+	context: 'that',
 	output: {
 		file: 'dist/bundle.js',
 		format: 'cjs',
@@ -26,6 +27,7 @@ export default defineConfig([{
 	]
 }, {
 	input: 'src/index.ts',
+	context: 'that',
 	output: {
 		file: 'dist/bundle.esm.js',
 		format: 'esm',
