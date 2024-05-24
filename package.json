@@ -2,14 +2,27 @@
   "name": "verdaccio-ldap-auth",
   "version": "0.0.7",
   "description": "测试登陆",
-  "main": "lib-ldap/src/index.js",
-  "types": "lib-ldap/src/index.d.ts",
+  "main": "./dist/bundle.js",
+  "types": "./dist/types/src/index.d.ts",
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/plugin-transform-runtime": "^7.24.3",
+    "@babel/plugin-transform-typescript": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-typescript": "^7.24.1",
+    "@babel/runtime": "^7.24.5",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^25.0.8",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-typescript": "^11.1.6",
     "@verdaccio/commons-api": "10.2.0",
-    "ldapjs": "^3.0.7"
+    "core-js": "^3.37.1",
+    "ldapjs": "^3.0.7",
+    "rollup": "^4.18.0",
+    "tslib": "^2.6.2"
   },
   "devDependencies": {
     "@types/express": "4.17.13",
@@ -32,7 +45,7 @@
   "repository": "https://github.com/dingyanhe/verdaccio-ldap-auth",
   "author": "dingyanhe <dyh1531@163.com>",
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc",
     "test": "jest .",
     "lint": "eslint \"**/*.{js,ts}\""
   },
