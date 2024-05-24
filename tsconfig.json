@@ -1,19 +1,21 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "sourceMap": true,
     "declaration": true,
     "allowJs": false,
     "noImplicitAny": false,
     "strict": true,
-    "outDir": "./lib-ldap",
+    "outDir": "./types",
+    "emitDeclarationOnly": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
   "include": [
     "src/*.ts",
     "types/*.ts",
-    "src/utils/verifyPassword.ts"
+    "rollup.config.ts"
   ]
 }
