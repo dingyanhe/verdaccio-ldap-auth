@@ -20,8 +20,8 @@ import { LDAPClientPromise } from './utils/ldapLogin';
  * 自定义Verdaccio授权插件
  */
 export default class AuthCustomPlugin implements IPluginAuth<PluginAuthConfig> {
-  public logger: Logger;
-  private config: PluginAuthConfig;
+  public logger: Logger = {} as any;
+  private config: PluginAuthConfig = {} as any;
   public constructor(
     config: PluginAuthConfig,
     options: PluginOptions<PluginAuthConfig>
