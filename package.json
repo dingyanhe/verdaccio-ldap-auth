@@ -46,7 +46,7 @@
   "repository": "https://github.com/dingyanhe/verdaccio-ldap-auth",
   "author": "dingyanhe <dyh1531@163.com>",
   "scripts": {
-    "build:tsc": "rm -rf ./lib && npm run build:tsc:esm && npm run build:tsc:cjs",
+    "build:tsc": "npm run build:tsc:esm && npm run build:tsc:cjs",
     "build:tsc:esm": "tsc -p ./tsconfig.build.esm.json",
     "build:tsc:cjs": "tsc -p ./tsconfig.build.json",
     "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc",
