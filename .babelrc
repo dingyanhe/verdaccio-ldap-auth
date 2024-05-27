@@ -26,5 +26,12 @@
       //   "version": "7.0.0-beta.0"
 			// }
 		]
-	]
+    // ,
+    // "@babel/plugin-proposal-class-properties",
+    // "@babel/plugin-transform-classes"
+	],
+  // "assumptions": {
+  //   "setClassMethods": true,
+  //   "noClassCalls": true
+  // }
 }

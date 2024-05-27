@@ -17,7 +17,7 @@ export default defineConfig([
       babel({
         extensions: [".ts"],
         babelHelpers: "runtime",
-        include: ["src/**/*"],
+        include: ["src/**/*", "types/**/*"],
       }),
     ],
   },
@@ -33,7 +33,7 @@ export default defineConfig([
       babel({
         extensions: [".ts"],
         babelHelpers: "runtime",
-        include: ["src/**/*"],
+        include: ["src/**/*", "types/**/*"],
       }),
     ],
   }

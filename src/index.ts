@@ -16,19 +16,22 @@ import {
 } from "@verdaccio/commons-api";
 import { LDAPClientPromise } from './utils/ldapLogin';
 
+export * from './utils/ldapLogin'
+
 /**
  * 自定义Verdaccio授权插件
  */
 export default class AuthCustomPlugin implements IPluginAuth<PluginAuthConfig> {
   public logger: Logger;
   private config: PluginAuthConfig;
+
   public constructor(
     config: PluginAuthConfig,
     options: PluginOptions<PluginAuthConfig>
   ) {
-    this.logger = options.logger;
+    this.logger = options?.logger || console;
     this.config = config;
-    return this;
+    return this
   }
 
   /**

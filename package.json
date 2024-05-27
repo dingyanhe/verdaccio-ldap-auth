@@ -2,9 +2,9 @@
   "name": "verdaccio-ldap-auth",
   "version": "0.1.0-beta.6",
   "description": "测试登陆",
-  "main": "./lib/cjs/src/index.js",
-  "module": "./lib/esm/src/index.d.js",
-  "types": "./lib/cjs/src/index.d.js",
+  "main": "./dist/bundle.js",
+  "module": "./dist/bundle.esm.js",
+  "types": "./dist/types/src/index.d.ts",
   "engines": {
     "node": ">=20"
   },
@@ -46,10 +46,7 @@
   "repository": "https://github.com/dingyanhe/verdaccio-ldap-auth",
   "author": "dingyanhe <dyh1531@163.com>",
   "scripts": {
-    "build:tsc": "npm run build:tsc:esm && npm run build:tsc:cjs",
-    "build:tsc:esm": "tsc -p ./tsconfig.build.esm.json",
-    "build:tsc:cjs": "tsc -p ./tsconfig.build.json",
-    "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc",
+    "build": "rollup -c rollup.config.ts --configPlugin typescript && tsc -p tsconfig.json",
     "test": "jest .",
     "lint": "eslint \"**/*.{js,ts}\""
   },
