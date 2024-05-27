@@ -5,6 +5,9 @@
   "main": "./dist/bundle.js",
   "module": "./dist/bundle.esm.js",
   "types": "./dist/types/src/index.d.ts",
+  "files": [
+    "dist/"
+  ],
   "engines": {
     "node": ">=20"
   },
