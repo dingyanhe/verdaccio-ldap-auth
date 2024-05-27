@@ -10,7 +10,7 @@
           "safari": "11.1"
         },
         "useBuiltIns": "usage",
-        "corejs": "3.37.1"
+        "corejs": { "proposals": true, "version": "3.37.1" }
       }
     ],
 		["@babel/preset-typescript"]
