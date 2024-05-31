@@ -5,7 +5,7 @@
 ## 使用
 
 ```bash
-pnpm add verdaccio-auth
+pnpm add verdaccio-ldap-auth
 ```
 
 在配置文件里这样配置
