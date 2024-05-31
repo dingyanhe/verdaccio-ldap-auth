@@ -10,24 +10,17 @@
       }
     ],
 		["@babel/preset-typescript"]
-  ]
-	// "plugins": [
-	// 	[
-	// 		"@babel/plugin-transform-runtime",
-	// 		{
-  //       "absoluteRuntime": false,
-  //       "corejs": false,
-  //       "helpers": true,
-  //       "regenerator": true,
-  //       "version": "7.24.3"
-	// 		}
-	// 	]
-  //   // ,
-  //   // "@babel/plugin-proposal-class-properties",
-  //   // "@babel/plugin-transform-classes"
-	// ]
-  // "assumptions": {
-  //   "setClassMethods": true,
-  //   "noClassCalls": true
-  // }
+  ],
+	"plugins": [
+		[
+			"@babel/plugin-transform-runtime",
+			{
+        "absoluteRuntime": false,
+        "corejs": false,
+        "helpers": true,
+        "regenerator": true,
+        "version": "7.24.3"
+			}
+		]
+	]
 }

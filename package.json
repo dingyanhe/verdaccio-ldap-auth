@@ -1,6 +1,6 @@
 {
   "name": "verdaccio-ldap-auth",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "测试登陆",
   "main": "./dist/bundle.cjs.js",
   "module": "./dist/bundle.esm.js",
