@@ -1,3 +1,4 @@
+import 'core-js/modules/es.string.replace-all'
 import {
   PluginOptions,
   AuthAccessCallback,

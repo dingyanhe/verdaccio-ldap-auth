@@ -64,7 +64,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@ldapjs/dn": "npm:ldapjs-dn-fork@1.1.0"
+      "@ldapjs/dn": "npm:ldapjs-dn-fork@1.1.0",
+      "process-warning": "~2.2.0"
     }
   }
 }

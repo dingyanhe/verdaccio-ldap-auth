@@ -4,30 +4,28 @@
       "@babel/preset-env",
       {
         "modules": false,
-        "targets": {
-          "node": "14.17.5"
-        },
-        "useBuiltIns": "usage",
+        "targets": { "node": "14.17" },
+        "useBuiltIns": "entry",
         "corejs": "3.37"
       }
     ],
 		["@babel/preset-typescript"]
-  ],
-	"plugins": [
-		[
-			"@babel/plugin-transform-runtime"
-			// {
-      //   "absoluteRuntime": false,
-      //   "corejs": false,
-      //   "helpers": true,
-      //   "regenerator": true,
-      //   "version": "7.0.0-beta.0"
-			// }
-		]
-    // ,
-    // "@babel/plugin-proposal-class-properties",
-    // "@babel/plugin-transform-classes"
-	]
+  ]
+	// "plugins": [
+	// 	[
+	// 		"@babel/plugin-transform-runtime",
+	// 		{
+  //       "absoluteRuntime": false,
+  //       "corejs": false,
+  //       "helpers": true,
+  //       "regenerator": true,
+  //       "version": "7.24.3"
+	// 		}
+	// 	]
+  //   // ,
+  //   // "@babel/plugin-proposal-class-properties",
+  //   // "@babel/plugin-transform-classes"
+	// ]
   // "assumptions": {
   //   "setClassMethods": true,
   //   "noClassCalls": true

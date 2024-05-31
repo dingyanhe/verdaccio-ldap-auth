@@ -25,8 +25,11 @@ const commonConfig = (format: ModuleFormat): RollupOptions => ({
     json(),
     babel({
       extensions: commonExtensions,
-      babelHelpers: "runtime",
-      exclude: /^(.+\/)?node_modules\/.+$/,
+      babelHelpers: "bundled",
+      // babelHelpers: "runtime",
+      // include: ['node_modules/**', 'src/**']
+      exclude: 'node_modules/**'
+      // /^(.+\/)?node_modules\/.+$/,
     }),
   ],
 });
