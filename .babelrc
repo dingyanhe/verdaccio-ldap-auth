@@ -4,7 +4,9 @@
       "@babel/preset-env",
       {
         "modules": false,
-        "targets": "node 14.17",
+        "targets": {
+          "node": "14.17.5"
+        },
         "useBuiltIns": "usage",
         "corejs": "3.37"
       }
@@ -25,7 +27,7 @@
     // ,
     // "@babel/plugin-proposal-class-properties",
     // "@babel/plugin-transform-classes"
-	],
+	]
   // "assumptions": {
   //   "setClassMethods": true,
   //   "noClassCalls": true

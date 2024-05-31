@@ -1,4 +1,3 @@
-import 'core-js/modules/es.string.replace-all.js'
 import {
   PluginOptions,
   AuthAccessCallback,
@@ -16,8 +15,6 @@ import {
   getUnauthorized,
 } from "@verdaccio/commons-api";
 import { LDAPClientPromise } from './utils/ldapLogin';
-
-export * from './utils/ldapLogin'
 
 /**
  * 自定义Verdaccio授权插件
