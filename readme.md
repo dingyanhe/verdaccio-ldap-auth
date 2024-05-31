@@ -39,3 +39,27 @@ auth:
     }
   }
 ```
+
+## 遇到node14版本识别不了
+
+```js
+require("node:util") # 此处构建babel和rollup都不管
+```
+
+```json
+  "pnpm": {
+    "overrides": {
+      "process-warning": "~2.2.0"
+    }
+  }
+```
+
+更多问题文档 [make emit work in jest](https://github.com/fastify/process-warning/commit/4835bb01cf9ddaa24678f824520b50f1e566ac0d)
+
+## babel没有注入replaceAll
+
+需要运行在node v14.17 环境下，该环境下一直没有 replaceAll方法，babel也未注入，需要手动引入
+
+```js
+import 'core-js/modules/es.string.replace-all'
+```
