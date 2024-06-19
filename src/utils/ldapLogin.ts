@@ -6,6 +6,26 @@ import {
   SearchOptions,
   SearchEntry,
 } from "ldapjs";
+import { timeout2Throw } from './timeout'
+
+export interface IOptions extends ClientOptions {
+  /**
+   * 绑定dn超时时间
+   */
+  dnTimeout?: number
+  /**
+   * 搜索dn超时时间
+   */
+  searchTimeout?: number
+  /**
+   * dn最大可重复次数，防止搜出来过多，导致验证丢失状态
+   */
+  dnRepeatLimit?: number,
+  /**
+   * 每个dn验证超时时间
+   */
+  perVerfiryDnTimeout?: number,
+}
 
 export interface IVerifyPasswordOptions {
   /**
@@ -45,55 +65,75 @@ export class LDAPClientPromise {
   client: Client;
   logger: Logger;
 
-  constructor(options: ClientOptions, logger: Logger) {
+  options: IOptions
+
+  constructor(options: IOptions, logger: Logger) {
     this.client = createClient(options);
+    this.options = {
+      dnTimeout: 3e3,
+      searchTimeout: 3e3,
+      dnRepeatLimit: 100,
+      perVerfiryDnTimeout: 3e3,
+      ...(options ?? {})
+    }
     this.logger = logger
   }
 
   bindPromise(userDn: string, userPwd: string) {
     this.logger.info("bind userDn")
-    return new Promise<void>((resolve, reject) => {
-      this.client.bind(userDn, userPwd, (e) => {
-        if (e) {
-          this.logger.info("bind userDn 失败")
-          reject(e);
-          this.client.unbind();
-          return;
-        }
-        this.logger.info("bind userDn 成功")
-        resolve();
-      });
-    });
+    return Promise.race([
+      timeout2Throw(this.options.dnTimeout, 'bind userDn 超时失败'),
+      new Promise<void>((resolve, reject) => {
+        this.client.bind(userDn, userPwd, (e) => {
+          if (e) {
+            this.logger.info("bind userDn 失败")
+            reject(e);
+            return;
+          }
+          this.logger.info("bind userDn 成功")
+          resolve();
+        });
+      })
+    ]);
   }
 
   searchPromise(baseDn: string, searchOptions: SearchOptions) {
     this.logger.info("searchPromise...")
-    return new Promise<SearchEntry[]>((resolve, reject) => {
-      const finalRes: SearchEntry[] = [];
-      this.client.search(baseDn, searchOptions, (er, r) => {
-        if (er) {
-          this.logger.info("searchPromise 失败")
-          reject(er);
-          this.client.unbind();
-          return;
-        }
+    return Promise.race([
+      timeout2Throw(this.options.searchTimeout, 'searchPromise 超时失败'),
+      new Promise<SearchEntry[]>((resolve, reject) => {
+        const finalRes: SearchEntry[] = [];
+        this.client.search(baseDn, searchOptions, (er, r) => {
+          if (er) {
+            this.logger.info("searchPromise 失败")
+            reject(er);
+            return;
+          }
 
-        r.on("searchEntry", (entry: SearchEntry) => {
-          finalRes.push(entry);
-        });
+          r.on("searchEntry", (entry: SearchEntry) => {
+            finalRes.push(entry);
+          });
 
-        r.on("error", (rErr) => {
-          this.logger.info("searchPromise response 失败")
-          reject(rErr);
-          this.client.unbind();
-        });
+          r.on("error", (rErr) => {
+            this.logger.info("searchPromise response 失败")
+            reject(rErr);
+          });
 
-        r.on("end", () => {
-          this.logger.info("searchPromise 成功")
-          resolve(finalRes);
+          r.on("end", () => {
+            this.logger.info("searchPromise 成功")
+            resolve(finalRes);
+          });
         });
-      });
-    });
+      })
+    ])
+  }
+
+  unbindPromise() {
+    return new Promise<void>((resolve, reject) => {
+      this.client?.unbind?.(e => {
+        e ? reject(e) : resolve()
+      })
+    })
   }
 
   static async verifyPassword(
@@ -115,25 +155,25 @@ export class LDAPClientPromise {
 			entries = await c.searchPromise(
 				baseDn,
 				convertVerifyPwdOptions2SearchOptions(options)
-			);
+			) as SearchEntry[];
       c.logger.info('verifyPassword searchPromise target 成功')
 		} catch (error) {
       c.logger.info('verifyPassword searchPromise target 异常')
 			throw new Error('搜索异常')
 		}
 
-    const [{ objectName: userDn = '' } = {}] = entries || [] 
-    if (!userDn) {
-      c.logger.info('verifyPassword bindPromise check 查询不到用户')
+    const dns = (entries || [] )?.map?.(e => e?.objectName?.toString())?.filter(e => !!e) as string[]
+    if (!dns || !dns?.length) {
+      c.logger.info('verifyPassword verifyEntriesPwd check 查询不到用户')
       throw new Error('找不到用户')
     }
 
 		try {
-      c.logger.info('verifyPassword bindPromise 验证用户名密码...')
-			await c.bindPromise(userDn?.toString() ?? '', userPwd)
-      c.logger.info('verifyPassword bindPromise 验证用户名密码 成功')
+      c.logger.info('verifyPassword verifyEntriesPwd 验证用户名密码...')
+      await verifyEntriesPwd(c, dns, userPwd)
+      c.logger.info('verifyPassword verifyEntriesPwd 验证用户名密码 成功')
 		} catch (error) {
-      c.logger.info('verifyPassword bindPromise 验证用户名密码 失败')
+      c.logger.info('verifyPassword verifyEntriesPwd 验证用户名密码 失败')
 			throw new Error('用户认证异常')
 		}
   }
@@ -169,4 +209,55 @@ function convertVerifyPwdOptions2SearchOptions(
         : filterStrings.join(""),
     ...otherSearhOptions,
   };
+}
+
+/**
+ * 搜索出来配置用户dn后需要逐条验证密码，要是有通过的就通过
+ */
+async function verifyEntryPwd(c: LDAPClientPromise, userDn: string, userPwd: string) {
+  if (typeof userDn !== 'string' || !userDn) {
+    c.logger.info('verifyEntryPwd 参数入参失败userDn无效')
+    return false
+  }
+
+  try {
+    c.logger.info('verifyEntryPwd bindPromise 验证用户名密码...')
+    await Promise.race([
+      timeout2Throw(c.options?.perVerfiryDnTimeout || 3e3, '验证超时'),
+      c.bindPromise(userDn?.toString() ?? '', userPwd),
+    ]) 
+    c.logger.info('verifyEntryPwd bindPromise 验证用户名密码 成功')
+    return true
+  } catch (error) {
+    c.logger.info('verifyEntryPwd bindPromise 验证用户名密码 失败')
+    return false
+  }
+}
+
+/**
+ * 搜索出来配置用户dn后需要逐条验证密码，要是有通过的就通过
+ */
+async function verifyEntriesPwd(c: LDAPClientPromise, dns: string[], userPwd: string) {
+  dns = dns.filter(e => !!e)
+  if (!dns.length) {
+    c.logger.error('verifyEntriesPwd 无效的dn列表')
+    return 
+  }
+
+  // 一个接口算100ms，最多100次验证重复，估摸最久等待10s
+  let maxSameLdapAccountLimit = c.options.dnRepeatLimit!
+  //选择一个个验证
+  while(dns.length && maxSameLdapAccountLimit > 0) {
+    const userDn = dns.pop() as string
+    maxSameLdapAccountLimit--
+    const flag = await verifyEntryPwd(c, userDn, userPwd)
+    // 主要有一个验证通过就通过
+    if (flag) {
+      c.logger.info('verifyEntriesPwd done 找到符合密码的用户')
+      return true
+    }
+  }
+
+  c.logger.info('verifyEntriesPwd done 未找到符合密码的用户')
+  throw new Error('用户认证异常')
 }

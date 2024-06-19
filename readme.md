@@ -16,6 +16,8 @@ auth:
   auth:
     clientOptions:
       url: ldap://xxxxx:389 # 请求的url
+      dnTimeout: 3e3 # 绑定dn超时时间
+      searchTimeout: 3e3 # 搜索dn超时时间
     verifyPasswordOptions:
       adminDn: CN=npm服务,DC=163,DC=com
       adminPwd: xxxx

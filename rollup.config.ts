@@ -26,6 +26,7 @@ const commonConfig = (format: ModuleFormat): RollupOptions => ({
     babel({
       extensions: commonExtensions,
       babelHelpers: "runtime",
+      include: ["node_modules/ldapjs/**", "./src/**", "./types/**"],
       exclude: /^(.+\/)?node_modules\/.+$/,
     }),
   ],
